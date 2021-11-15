@@ -32,12 +32,56 @@ catch (java.lang.ClassNotFoundException e)
 // Use it to build a query and print out the resultset.  Make sure to use PreparedStatement!
 
 // Make the connection
+String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
+String uid = "SA";
+String pw = "YourStrong@Passw0rd";
 
-// Print out the ResultSet
+NumberFormat currFormat = NumberFormat.getCurrencyInstance();	
+try ( Connection con = DriverManager.getConnection(url, uid, pw);
+Statement stmt = con.createStatement();) {
+	String SQL = "SELECT * FROM product";
+	boolean hasName = (name !=null ) && (!name.equals(""));
+	PreparedStatement pstmt = null;
+	ResultSet rst = null;
 
-// For each product create a link of the form
-// addcart.jsp?id=productId&name=productName&price=productPrice
+	if (!hasName) {
+		pstmt = con.prepareStatement(SQL);
+	}else{
+		name = "%"+name+"%";
+		SQL += " WHERE productName LIKE ?";
+		pstmt = con.prepareStatement(SQL);
+		pstmt.setString(1, name);
+	}
+	rst = pstmt.executeQuery();
+	
+	// Note: Asking driver to return actual SQL executed
+	// sql = pstmt.toString();
+	// out.println("<h2>SQL Query: " + sql + "</h2>");
+
+	//rst = stmt.executeQuery();
+    
+	out.println("<table><thead><tr><th>Id</th><th>Name</th><th>Price</th><th>Product Image</th><th>Image URL</th><th>Description</th><th>Category Id</th><th>Add to Cart</th></tr>");
+	while(rst.next()){
+		String productId = rst.getString(1);
+		String productName = rst.getString(2);
+		String price = rst.getString(3);
+		String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + price;
+		out.println("<tr><td>"+ productId +"</td><td>"+ productName +"</td><td> $"+price+"</td><td>"+rst.getString(4)+"</td><td>"+rst.getString(5)+"</td><td>"+rst.getString(6)+"</td><td>"+rst.getInt(7) +"</td><td><a href ="+addCartLink+">Add To Cart</a></td></tr>");
+	}
+	out.println("</thead></table>");
+	// Print out the ResultSet
+	
+	// For each product create a link of the form
+	// addcart.jsp?id=productId&name=productName&price=productPrice
+}
+catch (SQLException ex) 
+{ 	
+	out.println(ex); 
+}
 // Close connection
+
+
+
 
 // Useful code for formatting currency values:
 // NumberFormat currFormat = NumberFormat.getCurrencyInstance();

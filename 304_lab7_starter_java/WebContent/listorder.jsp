@@ -6,6 +6,12 @@
 <html>
 <head>
 <title>D&D Pets Inc. Grocery Order List</title>
+<style>
+table, th, td {
+  border: 1px solid black;
+  padding: 1px; 
+}
+</style>
 </head>
 <body>
 
@@ -35,6 +41,7 @@ String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
 String uid = "SA";
 String pw = "YourStrong@Passw0rd";
 try ( Connection con = DriverManager.getConnection(url, uid, pw);
+
 Statement stmt = con.createStatement();) {	
 	
 // Write query to retrieve all order summary records
@@ -52,34 +59,35 @@ ResultSet rst = stmt.executeQuery("SELECT orderId, orderDate, ordersummary.custo
 		// Write out product information 
 
 		
-  out.println("<table><thead><tr><th> Order Id </th><th> Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr></thead><tbody>");
+  
   NumberFormat currFormat = NumberFormat.getCurrencyInstance();	
   while (rst.next())
   {	
-	  out.println("<tr><td>"+ rst.getString(1)+"</td><td>"+rst.getDate(2)+"</td><td>"+rst.getDouble(3)+"</td><td>"+rst.getString(4)+" "+rst.getString(5)+"</td><td>" +currFormat.format(rst.getDouble(6)) + "</td></tr>");
+	out.println("<table><thead><tr><th> Order Id </th><th> Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr></thead><tbody>");
+	  out.println("<tr><td>"+ rst.getString(1)+"</td><td>"+rst.getDate(2)+"</td><td>"+rst.getDouble(3)+"</td><td>"+rst.getString(4)+" "+rst.getString(5)+"</td><td> $"+rst.getDouble(6)+"</td></tr>");
+
 	  PreparedStatement stmnt2 = con.prepareStatement("SELECT productId, quantity, price FROM orderproduct WHERE orderId = ?");
 	  stmnt2.setString(1, rst.getString(1)); 
 	  ResultSet rst2 = stmnt2.executeQuery();
-	  
-	  out.println("<table><thead><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr></thead><tbody>");
-	  
-	  while(rst2.next()){
-	  out.println("<tr><td>" + rst2.getString(1) + "</td><td>" + rst2.getInt(2) + "</td><td>" + currFormat.format(rst2.getDouble(3)) + "</td></tr>");
+	  out.println("<tr><table><thead><tr><th>Product Id</th><th>Quantity</th><th>Price</th></tr></thead><tbody>");
+
+	  	while(rst2.next()){
+		out.println("<tr><td>" + rst2.getString(1) + "</td><td>" + rst2.getInt(2) + "</td><td>" + currFormat.format(rst2.getDouble(3)) + "</td></tr>");
 	  }
-		out.println("</tbody></table>");
-	 
-  
+	  rst2.close(); 
+	  out.println("</tbody></table></tr>");
   }
+
   out.println("</tbody></table>");
+
+
 }
 catch (SQLException ex) 
 { 	out.println(ex); 
 }
 
 
-
 %>
-
 // For each order in the ResultSet
 
 	// Print out the order summary information
