@@ -1,92 +1,124 @@
 <%@ page import="java.sql.*,java.net.URLEncoder" %>
 <%@ page import="java.text.NumberFormat" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8" %>
 <!DOCTYPE html>
 <html>
 <head>
-<title>YOUR NAME Grocery</title>
+    <link href="https://fonts.googleapis.com/css?family=MedievalSharp&effect=fire-animation" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        h1 {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 64px;
+        }
+
+    </style>
+    <title>D&D Pets Store</title>
 </head>
 <body>
 
-<h1>Search for the products you want to buy:</h1>
+<h1 align="center" class="font-effect-fire-animation">Products</h1>
+<div class="centerDiv">
+    <ul>
+        <li><a href="listprod.jsp">Shop</a></li>
+        <li><a href="listorder.jsp">View Orders</a></li>
+        <li style="float: right"><a href="">Cart</a></li>
+    </ul>
+    <div style="padding-top: 10px">
+        <form method="get" action="listprod.jsp">
+            <input type="text" name="productName" size="50">
+            <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
+        </form>
+        <%-- This table is where all our products are output to--%>
+        <table>
+            <% // Get product name to search for
+                String name = request.getParameter("productName");
 
-<form method="get" action="listprod.jsp">
-<input type="text" name="productName" size="50">
-<input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
-</form>
+                //Note: Forces loading of SQL Server driver
+                try {    // Load driver class
+                    Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                } catch (java.lang.ClassNotFoundException e) {
+                    out.println("ClassNotFoundException: " + e);
+                }
 
-<% // Get product name to search for
-String name = request.getParameter("productName");
-		
-//Note: Forces loading of SQL Server driver
-try
-{	// Load driver class
-	Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-}
-catch (java.lang.ClassNotFoundException e)
-{
-	out.println("ClassNotFoundException: " +e);
-}
+                // Make the connection
+                String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
+                String uid = "SA";
+                String pw = "YourStrong@Passw0rd";
 
-// Variable name now contains the search string the user entered
-// Use it to build a query and print out the resultset.  Make sure to use PreparedStatement!
+                NumberFormat currFormat = NumberFormat.getCurrencyInstance();
+                try (Connection con = DriverManager.getConnection(url, uid, pw); Statement stmt = con.createStatement();) {
+                    String SQL = "SELECT * FROM product";
+                    boolean hasName = (name != null) && (!name.equals(""));
+                    PreparedStatement pstmt = null;
+                    ResultSet rst = null;
 
-// Make the connection
-String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
-String uid = "SA";
-String pw = "YourStrong@Passw0rd";
+                    if (!hasName) {
+                        pstmt = con.prepareStatement(SQL);
+                    } else {
+                        name = "%" + name + "%";
+                        SQL += " WHERE productName LIKE ?";
+                        pstmt = con.prepareStatement(SQL);
+                        pstmt.setString(1, name);
+                    }
+                    rst = pstmt.executeQuery();
+                    int counter = 0;
 
-NumberFormat currFormat = NumberFormat.getCurrencyInstance();	
-try ( Connection con = DriverManager.getConnection(url, uid, pw);
-Statement stmt = con.createStatement();) {
-	String SQL = "SELECT * FROM product";
-	boolean hasName = (name !=null ) && (!name.equals(""));
-	PreparedStatement pstmt = null;
-	ResultSet rst = null;
+					/**
+                     * Generate product cards for the table
+                     * */
+					while (rst.next()) {
+                        String productId = rst.getString(1);
+                        String productName = rst.getString(2);
+                        String price = rst.getString(3);
+						String imageDesc = rst.getString(4);
+                        String imageURL = rst.getString(5);
+						String itemDesc = rst.getString(6);
+                        String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + price;
 
-	if (!hasName) {
-		pstmt = con.prepareStatement(SQL);
-	}else{
-		name = "%"+name+"%";
-		SQL += " WHERE productName LIKE ?";
-		pstmt = con.prepareStatement(SQL);
-		pstmt.setString(1, name);
-	}
-	rst = pstmt.executeQuery();
-	
-	// Note: Asking driver to return actual SQL executed
-	// sql = pstmt.toString();
-	// out.println("<h2>SQL Query: " + sql + "</h2>");
+                        if(counter == 3){
+                            out.println("</tr>");
+							counter = 0;
+                        }
+                        //Start of new row in the table
+                        if(counter == 0){
+                            out.println("<tr>");
+                        }
+						out.println("<td>");
+						out.println("<div class = \"card\">");
+                        out.println("<img src=\""+imageURL+"\" alt=\""+imageDesc+"\" style=\"width:100%\">");
+						/**Prints productId with productName*/
+						//out.println("<h1>"+productId+" "+productName+"</h1>");
+                        out.println("<h1>"+productName+"</h1>");
 
-	//rst = stmt.executeQuery();
-    
-	out.println("<table><thead><tr><th>Id</th><th>Name</th><th>Price</th><th>Product Image</th><th>Image URL</th><th>Description</th><th>Category Id</th><th>Add to Cart</th></tr>");
-	while(rst.next()){
-		String productId = rst.getString(1);
-		String productName = rst.getString(2);
-		String price = rst.getString(3);
-		String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + price;
-		out.println("<tr><td>"+ productId +"</td><td>"+ productName +"</td><td> $"+price+"</td><td>"+rst.getString(4)+"</td><td>"+rst.getString(5)+"</td><td>"+rst.getString(6)+"</td><td>"+rst.getInt(7) +"</td><td><a href ="+addCartLink+">Add To Cart</a></td></tr>");
-	}
-	out.println("</thead></table>");
-	// Print out the ResultSet
-	
-	// For each product create a link of the form
-	// addcart.jsp?id=productId&name=productName&price=productPrice
-}
-catch (SQLException ex) 
-{ 	
-	out.println(ex); 
-}
-// Close connection
+                        out.println("<p class=\"price\">"+price+"</p>");
+                        out.println("<p>"+itemDesc+"</p>");
+						out.println("<p><button><a href=\""+addCartLink+"\">Add to Cart</a></button></p>");
+                        out.println("</td>");
+						counter++;
+//						out.println("<tr><td>" + productId + "</td><td>" + productName + "</td><td> $" + price + "</td><td>" + rst.getString(4) + "</td><td>" + rst.getString(5) + "</td><td>" + rst.getString(6)
+//                                + "</td><td>" + rst.getInt(7) + "</td><td><a href =" + addCartLink + ">Add To Cart</a></td></tr>");
+                    }
+					out.println("</tr>");
 
 
+                    // For each product create a link of the form
+                    // addcart.jsp?id=productId&name=productName&price=productPrice
+                }
+                // Close connection
+                catch (SQLException ex) {
+                    out.println(ex);
+                }
 
 
-// Useful code for formatting currency values:
-// NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-// out.println(currFormat.format(5.0);	// Prints $5.00
-%>
+            %>
+        </table>
+    </div>
+</div>
+
+
+
 
 </body>
 </html>
@@ -96,3 +128,23 @@ catch (SQLException ex)
 
 
 
+<%--<tr>--%>
+<%--    <td>--%>
+<%--        <div class="card" style="background-color: red">--%>
+<%--            <img src="jeans3.jpg" alt="Denim Jeans" style="width:100%">--%>
+<%--            <h1>Test</h1>--%>
+<%--            <p class="price">$19.99</p>--%>
+<%--            <p>Some text about the jeans..</p>--%>
+<%--            <p><button>Add to Cart</button></p>--%>
+<%--        </div>--%>
+<%--    </td>--%>
+<%--    <td>--%>
+<%--        <div class="card" style="background-color: blue">--%>
+<%--            <img src="jeans3.jpg" alt="Denim Jeans" style="width:100%">--%>
+<%--            <h1>Test</h1>--%>
+<%--            <p class="price">$19.99</p>--%>
+<%--            <p>Some text about the jeans..</p>--%>
+<%--            <p><button>Add to Cart</button></p>--%>
+<%--        </div>--%>
+<%--    </td>--%>
+<%--</tr>--%>
