@@ -7,16 +7,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css?family=MedievalSharp&effect=fire-animation" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <style>
+        h1 {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 64px;
+        }
+
+    </style>
+    <title>Your Cart</title>
 </head>
 <body>
+<div class="centerDiv"style="background-color: white">
+    <ul>
+        <li><a href="shop.html">Home</a></li>
+        <li><a href="listprod.jsp">Shop</a></li>
+        <li><a href="listorder.jsp">View Orders</a></li>
+    </ul>
+    <div>
 
 <%
     // Get the current list of products
     @SuppressWarnings({"unchecked"}) HashMap<String, ArrayList<Object>> productList = (HashMap<String, ArrayList<Object>>) session.getAttribute("productList");
 
     if (productList == null) {
-        out.println("<H1>Your shopping cart is empty!</H1>");
+        out.println("<h1>Your shopping cart is empty!</h1>");
         productList = new HashMap<String, ArrayList<Object>>();
     } else {
         NumberFormat currFormat = NumberFormat.getCurrencyInstance();
@@ -66,7 +83,10 @@
         out.println("<h2><a href=\"checkout.jsp\">Check Out</a></h2>");
     }
 %>
-<h2><a href="listprod.jsp">Continue Shopping</a></h2>
+        <h2><a href="listprod.jsp">Continue Shopping</a></h2>
+
+    </div>
+</div>
 </body>
 </html> 
 

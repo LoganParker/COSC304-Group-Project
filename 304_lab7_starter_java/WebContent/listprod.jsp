@@ -1,5 +1,6 @@
 <%@ page import="java.sql.*,java.net.URLEncoder" %>
 <%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8" %>
 <!DOCTYPE html>
 <html>
@@ -21,9 +22,10 @@
 <h1 align="center" class="font-effect-fire-animation">Products</h1>
 <div class="centerDiv">
     <ul>
+        <li><a href="Shop.html">Home</a></li>
         <li><a href="listprod.jsp">Shop</a></li>
         <li><a href="listorder.jsp">View Orders</a></li>
-        <li style="float: right"><a href="">Cart</a></li>
+        <li style="float: right"><a href="showcart.jsp">Cart</a></li>
     </ul>
     <div style="padding-top: 10px">
         <form method="get" action="listprod.jsp">
@@ -46,8 +48,9 @@
                 String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
                 String uid = "SA";
                 String pw = "YourStrong@Passw0rd";
-
-                NumberFormat currFormat = NumberFormat.getCurrencyInstance();
+                
+                Locale locale = new Locale("en", "US");
+                NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
                 try (Connection con = DriverManager.getConnection(url, uid, pw); Statement stmt = con.createStatement();) {
                     String SQL = "SELECT * FROM product";
                     boolean hasName = (name != null) && (!name.equals(""));
@@ -75,6 +78,7 @@
 						String imageDesc = rst.getString(4);
                         String imageURL = rst.getString(5);
 						String itemDesc = rst.getString(6);
+                        // addcart.jsp?id=productId&name=productName&price=productPrice
                         String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + price;
 
                         if(counter == 3){
@@ -97,14 +101,12 @@
 						out.println("<p><button><a href=\""+addCartLink+"\">Add to Cart</a></button></p>");
                         out.println("</td>");
 						counter++;
-//						out.println("<tr><td>" + productId + "</td><td>" + productName + "</td><td> $" + price + "</td><td>" + rst.getString(4) + "</td><td>" + rst.getString(5) + "</td><td>" + rst.getString(6)
-//                                + "</td><td>" + rst.getInt(7) + "</td><td><a href =" + addCartLink + ">Add To Cart</a></td></tr>");
                     }
 					out.println("</tr>");
 
 
                     // For each product create a link of the form
-                    // addcart.jsp?id=productId&name=productName&price=productPrice
+
                 }
                 // Close connection
                 catch (SQLException ex) {
@@ -122,29 +124,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-<%--<tr>--%>
-<%--    <td>--%>
-<%--        <div class="card" style="background-color: red">--%>
-<%--            <img src="jeans3.jpg" alt="Denim Jeans" style="width:100%">--%>
-<%--            <h1>Test</h1>--%>
-<%--            <p class="price">$19.99</p>--%>
-<%--            <p>Some text about the jeans..</p>--%>
-<%--            <p><button>Add to Cart</button></p>--%>
-<%--        </div>--%>
-<%--    </td>--%>
-<%--    <td>--%>
-<%--        <div class="card" style="background-color: blue">--%>
-<%--            <img src="jeans3.jpg" alt="Denim Jeans" style="width:100%">--%>
-<%--            <h1>Test</h1>--%>
-<%--            <p class="price">$19.99</p>--%>
-<%--            <p>Some text about the jeans..</p>--%>
-<%--            <p><button>Add to Cart</button></p>--%>
-<%--        </div>--%>
-<%--    </td>--%>
-<%--</tr>--%>

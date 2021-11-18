@@ -1,5 +1,6 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
+<%@ page import="java.util.Locale" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8" %>
 
 <!DOCTYPE html>
@@ -57,8 +58,9 @@
         // Write out product information
 
 
+        Locale locale = new Locale("en", "US");
+        NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
 
-        NumberFormat currFormat = NumberFormat.getCurrencyInstance();
         while (rst.next()) {
             out.println("<table><thead><tr><th> Order Id </th><th> Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr></thead><tbody>");
             out.println("<tr><td>" + rst.getString(1) + "</td><td>" + rst.getDate(2) + "</td><td>" + rst.getDouble(3) + "</td><td>" + rst.getString(4) + " " + rst.getString(5) + "</td><td> $"
