@@ -4,7 +4,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8" %>
 <!DOCTYPE html>
 <html>
-<head>
+<!-- <head>
     <link href="https://fonts.googleapis.com/css?family=MedievalSharp&effect=fire-animation" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="styles.css" rel="stylesheet">
@@ -16,17 +16,11 @@
 
     </style>
     <title>D&D Pets Store</title>
-</head>
+</head> -->
 <body>
-
+<%@include file="header.jsp"%>
 <h1 align="center" class="font-effect-fire-animation">Products</h1>
 <div class="centerDiv">
-    <ul>
-        <li><a href="Shop.html">Home</a></li>
-        <li><a href="listprod.jsp">Shop</a></li>
-        <li><a href="listorder.jsp">View Orders</a></li>
-        <li style="float: right"><a href="showcart.jsp">Cart</a></li>
-    </ul>
     <div style="padding-top: 10px">
         <form method="get" action="listprod.jsp">
             <input type="text" name="productName" size="50">
@@ -75,9 +69,9 @@
                         String productId = rst.getString(1);
                         String productName = rst.getString(2);
                         String price = rst.getString(3);
-						String imageDesc = rst.getString(4);
-                        String imageURL = rst.getString(5);
-						String itemDesc = rst.getString(6);
+                        String imageURL = rst.getString(4);
+						String imageDesc = rst.getString(5);
+                        String itemDesc = rst.getString(6);
                         // addcart.jsp?id=productId&name=productName&price=productPrice
                         String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + price;
 
@@ -94,7 +88,7 @@
                         out.println("<img src=\""+imageURL+"\" alt=\""+imageDesc+"\" style=\"width:100%\">");
 						/**Prints productId with productName*/
 						//out.println("<h1>"+productId+" "+productName+"</h1>");
-                        out.println("<h1>"+productName+"</h1>");
+                        out.println("<h1><a href = \"product.jsp?id="+productId+"\">"+productName+"</a></h1>");
 
                         out.println("<p class=\"price\">"+price+"</p>");
                         out.println("<p>"+itemDesc+"</p>");

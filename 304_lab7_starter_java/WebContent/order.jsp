@@ -161,7 +161,7 @@
             */
             Locale locale = new Locale("en", "US");
             NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
-            out.println("<h2> Congratulations "+ custName +" on brining home a brand new D&D pet!!!!</h2>");
+            out.println("<h2> Congratulations "+ custName +" on bringing home a brand new D&D pet!!!!</h2>");
             out.println("<h2>Order total: "+rst.getString(3)+"</h2>");
             out.println("<h4>We hope your adventures are full of cuddles.</h3>");
             out.println("<p>Order date: "+rst.getDate(2)+" Order ID: "+rst.getString(1)+"</p>");
@@ -200,11 +200,19 @@
             out.println("</tbody>");
             // Clear cart if order placed successfully
             productList.clear();
+            
+            // send orderId to ship.jsp
+            session.setAttribute("orderId", orderId);
+
         }
     } catch (SQLException ex) {
         out.println(ex);
         throw (ex);
     }
+
+
+
+
 %>
         </table>
     </div>

@@ -20,12 +20,8 @@
     <title>Your Cart</title>
 </head>
 <body>
+<%@include file="header.jsp"%>
 <div class="centerDiv"style="background-color: white">
-    <ul>
-        <li><a href="shop.html">Home</a></li>
-        <li><a href="listprod.jsp">Shop</a></li>
-        <li><a href="listorder.jsp">View Orders</a></li>
-    </ul>
     <div>
 
 <%
