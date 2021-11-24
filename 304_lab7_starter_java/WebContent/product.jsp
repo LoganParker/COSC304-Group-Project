@@ -3,15 +3,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8"%>
 <%@ page import="java.util.Locale" %>
 <%@ include file="jdbc.jsp" %>
-
 <html>
 <head>
-<title>D&D Pets Inc</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
+    <title>D&D Pets Inc</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-
 <%@ include file="header.jsp" %>
+<body>
 
 <%
 // Get product name to search for
@@ -54,8 +52,8 @@ categoryId = rst.getInt(7);
 }
 // TODO: If there is a productImageURL, display using IMG tag
 
-out.print("<p><b>" + productName + "</b></p>");
-
+out.print("<h2 align=center class=\"subheaderText\" >" + productName + "</h2>");
+out.println("<div class=\"centerDiv\" style=\"background-color: white;\">");
 //if(productImageURL != null){
     
     out.print("<img src= \"" + productImageURL + "\" alt= \"" + productName + "\" width=\"500\" height=\"600\">" );
@@ -70,11 +68,8 @@ out.print("<p><small><b>ID:</b> " + productId + "</small><br></br><small><b>Pric
 String addCartLink = "addcart.jsp?id=" + productId + "&name=" + productName + "&price=" + productPrice;
 out.println("<h1><button><a href=\""+addCartLink+"\">Add to Cart</a></button></h1>");
 out.println("<h1><button><a href=\"listprod.jsp\"> Continue Shopping </a></button><p></h1>");
-
-
-
 %>
-
+</div>
 </body>
 </html>
 

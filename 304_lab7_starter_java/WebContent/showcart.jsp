@@ -7,20 +7,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link href="https://fonts.googleapis.com/css?family=MedievalSharp&effect=fire-animation" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <style>
-        h1 {
-            font-family: 'MedievalSharp', cursive;
-            font-size: 64px;
-        }
-
-    </style>
-    <title>Your Cart</title>
+    <title>D&D Pets Inc. - Cart</title>
 </head>
 <body>
 <%@include file="header.jsp"%>
+<h2 align="center" class="subheaderText font-effect-fire-animation">Your Cart</h1>
 <div class="centerDiv"style="background-color: white">
     <div>
 
@@ -33,8 +24,6 @@
         productList = new HashMap<String, ArrayList<Object>>();
     } else {
         NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-
-        out.println("<h1>Your Shopping Cart</h1>");
         out.print("<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>");
         out.println("<th>Price</th><th>Subtotal</th></tr>");
 

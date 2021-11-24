@@ -4,22 +4,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF8" %>
 <!DOCTYPE html>
 <html>
-<!-- <head>
-    <link href="https://fonts.googleapis.com/css?family=MedievalSharp&effect=fire-animation" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-    <style>
-        h1 {
-            font-family: 'MedievalSharp', cursive;
-            font-size: 64px;
-        }
-
-    </style>
+<head>
     <title>D&D Pets Store</title>
-</head> -->
+</head>
 <body>
 <%@include file="header.jsp"%>
-<h1 align="center" class="font-effect-fire-animation">Products</h1>
+<h2 align="center" class="subheaderText font-effect-fire-animation">Products</h1>
 <div class="centerDiv">
     <div style="padding-top: 10px">
         <form method="get" action="listprod.jsp">
@@ -85,7 +75,7 @@
                         }
 						out.println("<td>");
 						out.println("<div class = \"card\">");
-                        out.println("<img src=\""+imageURL+"\" alt=\""+imageDesc+"\" style=\"width:100%\">");
+                        out.println("<img src=\""+imageURL+"\" alt=\""+imageDesc+"\" style=\"max-width:50%; max-height:50%\">");
 						/**Prints productId with productName*/
 						//out.println("<h1>"+productId+" "+productName+"</h1>");
                         out.println("<h1><a href = \"product.jsp?id="+productId+"\">"+productName+"</a></h1>");

@@ -22,7 +22,7 @@
         }
 
     </style>
-    <title>DND Pets Inc Grocery Order Processing</title>
+    <title>D&D Pets Inc - Order Processing</title>
 </head>
 <body>
 <h1 align="center" class="font-effect-fire-animation">Your order has been placed!</h1>
@@ -201,8 +201,6 @@
             // Clear cart if order placed successfully
             productList.clear();
             
-            // send orderId to ship.jsp
-            session.setAttribute("orderId", orderId);
 
         }
     } catch (SQLException ex) {

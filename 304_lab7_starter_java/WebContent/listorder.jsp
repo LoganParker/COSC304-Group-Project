@@ -6,18 +6,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>D&D Pets Inc. Grocery Order List</title>
+    <title>D&D Pets Inc. Order List</title>
     <style>
         table, th, td {
             border: 1px solid black;
             padding: 1px;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-
-<h1>Orders List</h1>
-
+<%@include file="header.jsp"%>
+<h2 align="center" class="font-effect-fire-animation">Orders List</h2>
+<div class="centerDiv" style="background-color: white;">
 <%
     //Note: Forces loading of SQL Server driver
     try {    // Load driver class
@@ -25,14 +25,6 @@
     } catch (java.lang.ClassNotFoundException e) {
         out.println("ClassNotFoundException: " + e);
     }
-
-    // Useful code for formatting currency values:
-    // NumberFormat currFormat = NumberFormat.getCurrencyInstance();
-    // out.println(currFormat.format(5.0));  // Prints $5.00
-%>
-
-
-<%
 
     // Make connection
     String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
@@ -62,7 +54,9 @@
         NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
 
         while (rst.next()) {
-            out.println("<table><thead><tr><th> Order Id </th><th> Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr></thead><tbody>");
+            out.println("<table>");
+            out.println("<thead><tr><th> Order Id </th><th> Order Date</th><th>Customer Id</th><th>Customer Name</th><th>Total Amount</th></tr></thead>");
+            out.println("<tbody>");
             out.println("<tr><td>" + rst.getString(1) + "</td><td>" + rst.getDate(2) + "</td><td>" + rst.getDouble(3) + "</td><td>" + rst.getString(4) + " " + rst.getString(5) + "</td><td> $"
                     + rst.getDouble(6) + "</td></tr>");
 
@@ -87,21 +81,6 @@
 
 
 %>
-
-
-
-
-// For each order in the ResultSet
-
-// Print out the order summary information
-// Write a query to retrieve the products in the order
-// - Use a PreparedStatement as will repeat this query many times
-// For each product in the order
-// Write out product information
-
-// Close connection
-
-
 </body>
 </html>
 
