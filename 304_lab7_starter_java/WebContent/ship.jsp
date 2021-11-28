@@ -38,7 +38,6 @@
 		boolean validOrderItems = false;
 		boolean inStock = false;
 		
-
 		if(validID){
 			// Check if there are products under the orderId
 			rst = stmt.executeQuery("Select productId from orderproduct where orderId = "+orderId);
