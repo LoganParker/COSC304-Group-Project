@@ -10,9 +10,20 @@
         <li><a href="listprod.jsp">Begin Shopping</a></li>
         <li><a href="listorder.jsp">View Orders</a></li>
 
-        <li style="float: right"><a href="showcart.jsp">Cart</a></li>
+        
+
+
         <%
-            // TODO: Implement this
+        String userName = (String) session.getAttribute("authenticatedUser");
+        if(userName !=null){
+            //User is logged in 
+            out.println("<li style=\"float: right\"><a href=\"logout.jsp\">Log Out</a></li>");
+            out.println("<li style=\"float: right\"><a href=\"customer.jsp\">"+userName+"</a></li>");
+        }else{
+            //User is not logged in
+            out.println("<li style=\"float: right\"><a href=\"login.jsp\">Log In</a></li>");
+        }
+            // TODO: Implement admin section
 //        if(loggedIn){
 //			show customer name linked to cust info;
 //			if(admin){
@@ -24,6 +35,7 @@
 //        }
 //
         %>
+        <li style="float: right"><a href="showcart.jsp">Cart</a></li>
     </ul>
 </div>
 
