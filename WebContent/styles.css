@@ -86,7 +86,10 @@ li a:hover {
     font-size: 32px;
     text-align: center;
 }
-
+/* table, th, td {
+    border: 1px solid black;
+    padding: 1px;
+} */
 /*.product-grid{*/
 /*    display: grid;*/
 /*    grid-template-columns: repeat(3, 1fr);*/

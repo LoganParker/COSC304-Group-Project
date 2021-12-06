@@ -15,12 +15,60 @@
         <form method="get" action="listprod.jsp">
             <input type="text" name="productName" size="50">
             <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
+            <select name="category" id="category">
+                <option value=""> </option> 
+            <%
+                String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
+                String uid = "SA";
+                String pw = "YourStrong@Passw0rd";            
+                try (Connection con = DriverManager.getConnection(url, uid, pw); Statement stmt = con.createStatement();) {
+                    String SQL = "SELECT categoryId,categoryName FROM category";
+                    PreparedStatement pstmt = con.prepareStatement(SQL);
+                    ResultSet rst = pstmt.executeQuery();
+                    while(rst.next()){
+                        String categoryId = rst.getString(1);
+                        String categoryName = rst.getString(2);
+                        out.println("<option value=\""+categoryId+"\">"+categoryName+"</option>");
+                    }
+                }catch (Exception ex) {
+                    out.println(ex);
+                }
+
+                %>
+            </select>
+                
+            
         </form>
         <%-- This table is where all our products are output to--%>
         <table>
             <% // Get product name to search for
-                String name = request.getParameter("productName");
+                String name = <form method="get" action="admin.jsp">
+    <input type="text" name="productName" size="40">
+    <br>
+    <h1> Insert Product </h1>
+    <div>
+    <div>
+    <label> Product Name </label>
+    <input type="text" name="productName" placeholder="wonderous item goes here">
+    </div>
+    <label> Product Price </label>
+    <input type="text" name="productPrice" placeholder="wonderous item price here" >
+    <br>
+    <label> Image URL  </label>
+    <input type="text" name="productImageURL" placeholder="https://monster.png">
+    <div>
+    <label> Product Description </label>
+    <input type="text" name="productDesc" placeholder="item flavour text goes here">
+    </div>
+    <div>
+    <label> Category  Name</label>
+    <input type="text" name="categoryName" placeholder="item category">
+    </div>
+    </div>
 
+</div>
+</form>;
+                String category = request.getParameter("category");
                 //Note: Forces loading of SQL Server driver
                 try {    // Load driver class
                     Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -29,32 +77,57 @@
                 }
 
                 // Make the connection
-                String url = "jdbc:sqlserver://db:1433;DatabaseName=tempdb;";
-                String uid = "SA";
-                String pw = "YourStrong@Passw0rd";
-                
+
                 Locale locale = new Locale("en", "US");
                 NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
                 try (Connection con = DriverManager.getConnection(url, uid, pw); Statement stmt = con.createStatement();) {
-                    String SQL = "SELECT * FROM product";
+                    String SQL = "SELECT product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc, SUM(orderproduct.quantity) as amountSold FROM product JOIN orderproduct ON product.productId = orderproduct.productId";
                     boolean hasName = (name != null) && (!name.equals(""));
+                    boolean hasCategory = false;
+                    if (category != null){
+                        hasCategory = !category.equals("");
+                    }
                     PreparedStatement pstmt = null;
                     ResultSet rst = null;
-
-                    if (!hasName) {
+                    
+                    //If there is a category but no name
+                    if (hasCategory && !hasName) { 
+                        SQL += " WHERE product.categoryId = ?";
+                        SQL += " GROUP BY product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc ORDER BY amountSold DESC, product.productName";
                         pstmt = con.prepareStatement(SQL);
-                    } else {
+                        pstmt.setString(1, category);
+                    // Takes care of casses if there is an input name
+                    } else if (hasName) { 
                         name = "%" + name + "%";
-                        SQL += " WHERE productName LIKE ?";
-                        pstmt = con.prepareStatement(SQL);
+                        SQL += " WHERE product.productName LIKE ?";
+
+                        //We check here if the user has inputted a category along with a product name. If they have we append the categoryId to the SELECT
+                        if( hasCategory ){
+                            SQL += " AND categoryId = ?";
+                            SQL += " GROUP BY product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc ORDER BY amountSold DESC, product.productName";
+                            pstmt = con.prepareStatement(SQL);
+                            pstmt.setString(2, category);
+
+                        //If no category has been input we just run the else statement
+                        }else{ 
+                            SQL += " GROUP BY product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc ORDER BY amountSold DESC, product.productName";
+                            pstmt = con.prepareStatement(SQL); 
+                        }
                         pstmt.setString(1, name);
+
+                    //No filters
+                    }else if(!hasName){
+                        SQL += " GROUP BY product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc ORDER BY amountSold DESC, product.productName";
+                        pstmt = con.prepareStatement(SQL);
                     }
+                    
                     rst = pstmt.executeQuery();
                     int counter = 0;
 
 					/**
                      * Generate product cards for the table
                      * */
+                     
 					while (rst.next()) {
                         String productId = rst.getString(1);
                         String productName = rst.getString(2);
@@ -94,7 +167,8 @@
                 }
                 // Close connection
                 catch (SQLException ex) {
-                    out.println(ex);
+                    throw(ex);
+                    // out.println(ex);
                 }
 
 
@@ -102,8 +176,6 @@
         </table>
     </div>
 </div>
-
-
 
 
 </body>
