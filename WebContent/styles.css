@@ -90,6 +90,10 @@ li a:hover {
     border: 1px solid black;
     padding: 1px;
 } */
+table {
+    display: inline;
+}
+
 /*.product-grid{*/
 /*    display: grid;*/
 /*    grid-template-columns: repeat(3, 1fr);*/

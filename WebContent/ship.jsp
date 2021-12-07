@@ -88,7 +88,7 @@
 			con.commit();
 
 			// Print statement about success
-			out.print("<img src=\"https://lh3.googleusercontent.com/proxy/AIAke5DM2gkLkgmiNRUlSCkvJaqpJ_rSZFMxFhQrPoL3s_MyETMhn5xPxuvoVRq7noEyUnIle8y58W3orau39AJm2g9noLy1A4wsE4_NTKVEmItZXSH0IGuKaF4vZVjrDKNq6P91yysCLfhkq64pcVTMXiIS-lfsewQ\"> <br><b> Your New Adventure Buddies are on their way! woot :D</b>");
+			out.print("<img src=\"https://c.tenor.com/VU04RBOAYl0AAAAC/bilbo-baggins-running.gif\"> <br><b> Your New Adventure Buddies are on their way! woot :D</b>");
 		} else{
 			// Print statement about failure.
 			if(!validOrderItems){

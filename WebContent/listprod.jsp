@@ -42,32 +42,7 @@
         <%-- This table is where all our products are output to--%>
         <table>
             <% // Get product name to search for
-                String name = <form method="get" action="admin.jsp">
-    <input type="text" name="productName" size="40">
-    <br>
-    <h1> Insert Product </h1>
-    <div>
-    <div>
-    <label> Product Name </label>
-    <input type="text" name="productName" placeholder="wonderous item goes here">
-    </div>
-    <label> Product Price </label>
-    <input type="text" name="productPrice" placeholder="wonderous item price here" >
-    <br>
-    <label> Image URL  </label>
-    <input type="text" name="productImageURL" placeholder="https://monster.png">
-    <div>
-    <label> Product Description </label>
-    <input type="text" name="productDesc" placeholder="item flavour text goes here">
-    </div>
-    <div>
-    <label> Category  Name</label>
-    <input type="text" name="categoryName" placeholder="item category">
-    </div>
-    </div>
-
-</div>
-</form>;
+                String name = request.getParameter("productName");
                 String category = request.getParameter("category");
                 //Note: Forces loading of SQL Server driver
                 try {    // Load driver class
@@ -81,7 +56,7 @@
                 Locale locale = new Locale("en", "US");
                 NumberFormat currFormat = NumberFormat.getCurrencyInstance(locale);
                 try (Connection con = DriverManager.getConnection(url, uid, pw); Statement stmt = con.createStatement();) {
-                    String SQL = "SELECT product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc, SUM(orderproduct.quantity) as amountSold FROM product JOIN orderproduct ON product.productId = orderproduct.productId";
+                    String SQL = "SELECT product.productId, product.productName, product.productPrice, product.productImageURL, product.productImage, product.productDesc, SUM(orderproduct.quantity) as amountSold FROM product LEFT JOIN orderproduct ON product.productId = orderproduct.productId";
                     boolean hasName = (name != null) && (!name.equals(""));
                     boolean hasCategory = false;
                     if (category != null){

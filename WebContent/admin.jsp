@@ -22,8 +22,8 @@
                    
                    
                 
-                    out.println("<br><h1>Customer Information</h1><table><thead>");
-                    out.print("<tr><td>custId</td><td>firstName</td><td>lastName</td><td>userid</td><td>password</td></tr>");
+                    out.println("<br><h4>Customer Information</h4><table><thead>");
+                    out.print("<tr><th>custId</th><th>firstName</th><th>lastName</th><th>userid</th><th>password</th></tr>");
                     out.println("</thead><tbody>");
                     while(rst.next()){
                         //index attributes from values 1,2,3, 11, 12. Refer to customer table
@@ -42,8 +42,8 @@
                     }
                 out.print("</tbody></table>"); 
 
-                out.println("<h1>Order and Sales Report Table</h1><table><thead>");
-                out.print("<tr><td>orderDate</td><td>orderId</td><td>customerId</td><td>totalAmount</td></tr>");
+                out.println("<h4>Order and Sales Report Table</h4><table><thead>");
+                out.print("<tr><th>orderDate</th><th>orderId</th><th>customerId</th><th>totalAmount</th></th>");
                 sql = "SELECT orderDate, orderId, customerId, totalAmount FROM ordersummary ORDER BY orderDate DESC";
                 out.print("</thead><tbody>"); 
                 pstmt = con.prepareStatement(sql);
@@ -75,7 +75,7 @@
 %>
 
 <!--Add new product -->
-<form method="get" action="admin.jsp">
+<form method="post" action="insertProduct.jsp">
     <br>
     <h1> Insert Product </h1>
     <div>
@@ -97,62 +97,62 @@
     <input type="text" name="categoryName" placeholder="item category">
     </div>
     </div>
+    <input type="submit" value="Submit"><input type="reset" value="Reset">
+    <h1> Restore Database </h1> 
+    <a href = "loaddata.jsp"> 
+    <input type=button value="Restore Database"> 
+    </a> 
 
-</div>
+
 </form>
+
+<!--Update / Delete Product -->
+<form method="get" action="admin.jsp">
+<input type="text" name="productName" size="50">
+<input type="submit" value="Submit"><input type="reset" value="Reset"> 
+<table>
 <%
-
-//create array with recieved parameters
-String[] rsArr = {"productName","productPrice","productImageURL","productDesc","categoryName"};
-ArrayList<String> rsList = new ArrayList<String>();
-for(String i: rsArr){
-    rsList.add(request.getParameter(i));
-}
-
-//Check if category is in category table
+String productName = request.getParameter("productName");
 try{
     getConnection();
-    String sql = "SELECT categoryId FROM category WHERE categoryName = ?";
+    String sql = "SELECT * FROM product WHERE productName LIKE ?";
     PreparedStatement pstmt = con.prepareStatement(sql);
-    pstmt.setString(1, rsList.get(4)); //possible error here 
+    productName = '%'+ productName + '%';
+    pstmt.setString(1, productName); //possible error here 
     ResultSet rst = pstmt.executeQuery();
-    
-    //Find category Id
-    //if query is empty get count of unique id's and increment
-    String categoryId = "";
-    if(!rst.next()){
-        //return amount 
-        sql = "SELECT COUNT(*) FROM product GROUP BY categoryId";
-        pstmt = con.prepareStatement(sql);
-        rst = pstmt.executeQuery();
-        rst.next();
-        int result = Integer.parseInt(rst.getString(1)) + 1;
-        categoryId = Integer.toString(result);
-    }else{
-        categoryId = rst.getString(1);    
-    }
-
-    //insert values into database 
-    String vals = "productName,productPrice,productImageURL,productDesc,categoryId";
-    rsList.set(4, categoryId);
-    String listResults = String.join(", ", rsList);
-    out.print(rsList.toString());
-    sql = "INSERT INTO product ("+vals+") VALUES ("+rsList+")"; 
-    pstmt = con.prepareStatement(sql);
-    rst = pstmt.executeQuery();
+    String[] colNames = {"productId","productName","productPrice","productDesc","categoryId", "Update", "Delete"};
+    out.print("<tr>");
+    for(String i: colNames){
+        out.print("<th>"+i+"</th>");}
+    out.print("</tr>");
+    while(rst.next()){
+        out.print("<tr>");
+        int[] idx = {1,2,3,6,7};
+        for(int i: idx) {
+            out.print("<td>"+rst.getString(i)+"</td>");
+            }
+        String link = "?productId="+rst.getString(1)+"&productName="+rst.getString(2)+"&productPrice="+rst.getString(3)+"&productDesc="+rst.getString(6)+"&categoryId="+rst.getString(7);
+        String[] links= { "updateprod.jsp" + link, "deleteprod.jsp" + link};
+        String[] buttonType = {"Update", "Delete"};
+        int index = 0;
+        for(String i: links){
+            out.println("<td><button><a href=\""+i+"\">"+buttonType[index++]+"</a></button></td>");
+        }
+        out.print("</tr>");   
+    }   
 
 }catch (Exception ex) {
-    
     out.println(ex);
     //throw(ex);
 }finally{
     closeConnection();
 }
-
 %>
-//
+</table>
 
-//
+
+
+</div>
 </body>
 </html>
 

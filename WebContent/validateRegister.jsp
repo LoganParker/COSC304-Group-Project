@@ -69,8 +69,12 @@
 			int result = pstmt.executeUpdate();
 			out.println(result);
 			if(result == 1 ){
+				session.removeAttribute("loginMessage");
+				session.setAttribute("authenticatedUser",username);
+				retStr = username;
 				return username; //insert works!
 			} else {
+				session.setAttribute("loginMessage","Could not connect to the system using that username/password.");
 				return null;     //insert fails :(
 			}
           
@@ -90,13 +94,6 @@
 			
 		}	
 		
-		if(retStr != null)
-		{	session.removeAttribute("loginMessage");
-			session.setAttribute("authenticatedUser",username);
-			
-		} else {
-			session.setAttribute("loginMessage","Could not connect to the system using that username/password.");
-		}
 		return retStr;
 	}
 %>

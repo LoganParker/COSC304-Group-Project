@@ -31,10 +31,11 @@
 		</table>
 		<br/>
 		<input class="submit" type="submit" name="Submit2" value="Log In">
-		</form>
 		<a href="register.jsp">
-			<button>Register</button>
+			<button type="button">Register</button>
 		</a>
+		</form>
+		
 		</div>
 	</div>
 </body>

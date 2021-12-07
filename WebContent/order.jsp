@@ -1,4 +1,4 @@
-a<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Iterator" %>
@@ -25,13 +25,10 @@ a<%@ page import="java.sql.*" %>
     <title>D&D Pets Inc - Order Processing</title>
 </head>
 <body>
+<%@include file="header.jsp"%>
+
 <h1 align="center" class="font-effect-fire-animation">Your order has been placed!</h1>
 <div class = "centerDiv" style="background-color: white">
-    <ul>
-        <li><a href="shop.html">Home</a></li>
-        <li><a href="listprod.jsp">Shop</a></li>
-        <li><a href="listorder.jsp">View Orders</a></li>
-    </ul>
     <div>
         
 
@@ -77,15 +74,21 @@ a<%@ page import="java.sql.*" %>
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
 
+            String address = request.getParameter("streetaddr");
+            String city = request.getParameter("city");
+            String state = request.getParameter("state");
+            String postal = request.getParameter("postalcode");
+            String country = request.getParameter("country");
+
             //orderId, orderDate ,totalAmount (initialize to null, update later) ,shiptoAddress ,shiptoCity ,shiptoState ,shiptoPostalCode ,shiptoCountry , customerId
             sql = "INSERT INTO ordersummary(orderDate, shiptoAddress, shiptoCity, shiptoState, shiptoPostalCode, shiptoCountry, customerId) VALUES (?,?,?,?,?,?,?)";
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, formatter.format(date));
-            pstmt.setString(2, rst.getString(1));
-            pstmt.setString(3, rst.getString(2));
-            pstmt.setString(4, rst.getString(3));
-            pstmt.setString(5, rst.getString(4));
-            pstmt.setString(6, rst.getString(5));
+            pstmt.setString(2, address);
+            pstmt.setString(3, city);
+            pstmt.setString(4, state);
+            pstmt.setString(5, postal);
+            pstmt.setString(6, country);
             pstmt.setString(7, custId);
             pstmt.executeUpdate();
             rst = pstmt.getGeneratedKeys();
@@ -200,12 +203,23 @@ a<%@ page import="java.sql.*" %>
             out.println("</tbody>");
             // Clear cart if order placed successfully
             productList.clear();
-            
+
+
+            String payType = request.getParameter("paymentType");
+            String cardNum = request.getParameter("cardNumber");
+            String payExpDate = request.getParameter("paymentExpiryDate");
+
+            sql = "INSERT INTO paymentmethod(paymentType, paymentNumber, paymentExpiryDate, customerId) VALUES (?, ?, ?, ?)";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, payType);
+            pstmt.setString(2, cardNum);
+            pstmt.setString(3, payExpDate);
+            pstmt.setString(4, custId);
+            pstmt.executeUpdate();
 
         }
     } catch (SQLException ex) {
         out.println(ex);
-        throw (ex);
     }
 
 

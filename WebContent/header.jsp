@@ -9,6 +9,8 @@
         <li><a href="index.jsp">Home</a></li>
         <li><a href="listprod.jsp">Begin Shopping</a></li>
         <li><a href="listorder.jsp">View Orders</a></li>
+        <li><a href="warehouse.jsp">Warehouse</a></li>
+        <li><a href="admin.jsp">Admin</a></li>
 
         
 

@@ -13,6 +13,12 @@
     <br>
     <h4> Payment Information </h1>
     <div>
+        <label for="paymentType"> Payment Type </label>
+    <select name="paymentType" id="paymentType">
+        <option value="MC">MonsterCard</option>
+        <option value="VS">Vampisa</option>
+        <option value="DB">DireDebit</option>
+        </select>
     <div>
     <label> Name on Card </label>
     <input type="text" name="cardholdername" placeholder="Frodo Baggins">
@@ -23,7 +29,7 @@
     <input type="text" name="expirationdate" placeholder="MM/YYYY" pattern =^((0[1-9])|(1[0-2]))\/20[2-9][0-9]$>
     <div>
     <label> CVV </label>
-    <input type="text" name="cvv" placeholder="123" pattern =^[0-9]{3}$
+    <input maxlength=3 type="text" name="cvv" placeholder="123" pattern =^[0-9]{3}$>
     </div>
     </div>
 
@@ -46,8 +52,9 @@
      <label> Country </label>
     <input type="text" name="country" placeholder="United States">
     </div>
-    </div>
     <input type="submit" value="Submit"><input type="reset" value="Reset">
+    </div>
+
 </form>
 </div>
 </body>
