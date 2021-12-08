@@ -46,7 +46,9 @@
         }
         scanner.close();
 
-        out.print("<br><br><h1>Database loaded. You will be redirected shortly</h1>");
+        out.print("<br><br><h1>Database loaded. You have been logged out and will be redirected shortly</h1>");
+        session.setAttribute("authenticatedUser",null);
+        session.setAttribute("customerId",null);
     } catch (Exception e) {
         out.print(e);
     }

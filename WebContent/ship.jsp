@@ -67,7 +67,7 @@
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 
-			stmt.executeUpdate(String.format("INSERT INTO shipment (shipmentDate, shipmentDesc, warehouseId) VALUES (%s, '%s', 1)", formatter.format(date), "Sexy ORDEER" ));
+			stmt.executeUpdate(String.format("INSERT INTO shipment (shipmentDate, shipmentDesc, warehouseId) VALUES (%s, '%s', 1)", formatter.format(date), orderId ));
 			
 			sql = "SELECT OP.orderId, OP.quantity, PI.quantity, OP.productId FROM  orderproduct AS OP JOIN productinventory AS PI on OP.productId = PI.productId WHERE warehouseID = 1 AND orderId = " + orderId;
 			
@@ -115,6 +115,7 @@
 		throw(e);		
 	}
 %>
+<h2><a href="admin.jsp">Back to Admin Page</a></h2>                       				
 <h2><a href="shop.html">Back to Main Page</a></h2>                       				
 </div>
 

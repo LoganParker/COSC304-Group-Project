@@ -116,17 +116,6 @@
                 pstmt.executeUpdate();
             }
 
-/*
-                
-                rst_u.moveToInsertRow(); // Cursor now at row to insert
-                rst_u.updateInt(1,orderId);
-                rst_u.updateString(2,productId);
-                rst_u.updateInt(3,qty);
-                rst_u.updateDouble(4,pr);
-                rst_u.insertRow();
-                count++;
-*/
-
             /**UPDATE total amount in orderSummary table */ 
             //retrieve the sum from orderProduct
             sql = "SELECT sum(price*quantity) as totalAmount FROM orderproduct WHERE orderId = ?";
@@ -198,7 +187,6 @@
                 if(!rst.next()){
                     break;
                 }
-
             }
             out.println("</tbody>");
             // Clear cart if order placed successfully
@@ -221,10 +209,6 @@
     } catch (SQLException ex) {
         out.println(ex);
     }
-
-
-
-
 %>
         </table>
     </div>

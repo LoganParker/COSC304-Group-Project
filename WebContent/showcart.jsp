@@ -39,7 +39,7 @@
     } else {
         NumberFormat currFormat = NumberFormat.getCurrencyInstance();
         out.println("<form name='updateCart' method='GET' action='updateCart.jsp'>");
-        out.print("<table style=\"display: inline;\"><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th><th></th></tr>");
+        out.print("<table style=\"display: inline;\"><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Subtotal</th><th><input type=\"submit\" value=\"Update\"></th></tr>");
         
 
         double total = 0;
@@ -57,7 +57,7 @@
             // Prod Name
             out.print("<td>" + product.get(1) + "</td>");
             // Quantity
-            out.print("<td align=\"center\"><input type=\"number\" name=\"" +product.get(0)+"\" id=quantity min=1 max=99 value=\""+product.get(3)+"\"></td>");
+            out.print("<td align=\"center\"><input type=\"number\" name=\"" +product.get(0)+"\" id=quantity min=0 max=99 value=\""+product.get(3)+"\"></td>");
             Object price = product.get(2);
             Object itemqty = product.get(3);
             double pr = 0;

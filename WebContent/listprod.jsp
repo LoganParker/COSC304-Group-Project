@@ -13,7 +13,7 @@
 <div class="centerDiv">
     <div style="padding-top: 10px">
         <form method="get" action="listprod.jsp">
-            <input type="text" name="productName" size="50">
+            <input type="text" name="productName" size="50" maxlength="40">
             <input type="submit" value="Submit"><input type="reset" value="Reset"> (Leave blank for all products)
             <select name="category" id="category">
                 <option value=""> </option> 

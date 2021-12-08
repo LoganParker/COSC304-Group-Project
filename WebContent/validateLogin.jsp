@@ -24,6 +24,7 @@
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String retStr = null;
+		String custId = null;
 
 		if(username == null || password == null)
 				return null;
@@ -33,7 +34,7 @@
 		
 		try {
 			getConnection();
-			String sql = "SELECT userid FROM customer WHERE customer.userid = ? AND customer.password = ?";
+			String sql = "SELECT userid, customerId FROM customer WHERE customer.userid = ? AND customer.password = ?";
 			
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, username);
@@ -42,6 +43,8 @@
 
 			if(rst.next()){
 				retStr = rst.getString(1);
+				custId = rst.getString(2);
+				
 			}
 
 
@@ -60,6 +63,8 @@
 		if(retStr != null){	
 			session.removeAttribute("loginMessage");
 			session.setAttribute("authenticatedUser",username);
+			session.setAttribute("customerId",custId);
+
 		}
 		else{
 			session.setAttribute("loginMessage","Could not connect to the system using that username/password.");

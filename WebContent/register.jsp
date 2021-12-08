@@ -38,9 +38,9 @@ if (session.getAttribute("loginMessage") != null)
     <table style="display: inline;">
         <tr>
             <td><div align="right"><font size="2">Username:</font></div></td>
-            <td><input type="text" name="username" size=10 maxlength=10 required></td>
+            <td><input type="text" name="username" size=10 maxlength="20" required></td>
             <td><div align="right"><font size="2">Password:</font></div></td>
-            <td><input type="password" name="password" size=10 maxlength="10"></td>
+            <td><input type="password" name="password" size=10 maxlength="30"></td>
         </tr>
     </table>
     
@@ -52,15 +52,15 @@ if (session.getAttribute("loginMessage") != null)
 
 <tr>
 	<td><div align="right"><font size="2">First Name:</font></div></td>
-	<td><input type="text" name="firstname" required></td>
+	<td><input type="text" name="firstname" required maxlength="40"></td>
 	<td><div align="right"><font size="2">Last Name:</font></div></td>
-	<td><input type="text" name="lastname" required></td>
+	<td><input type="text" name="lastname" required maxlength="40"></td>
 </tr>
 <tr>
 	<td><div align="right"><font size="2">Email:</font></div></td>
-	<td><input type="email" name="email"></td>
+	<td><input type="email" name="email" maxlength="50"></td>
     <td><div align="right"><font size="2">Phone:</font></div></td>
-	<td><input type="tel" name="phone" pattern =^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$ placeholder="xxx-xxx-xxx">
+	<td><input type="tel" name="phone" pattern =^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$ placeholder="xxx-xxx-xxx" maxlength="20">
     </td>
 </tr>
 </table>
@@ -69,19 +69,19 @@ if (session.getAttribute("loginMessage") != null)
 <table style="display: inline;">
 <tr>
 <td><label><font size="2"> Street Address </font></label></td>
-<td><input type="text" name="streetaddr" placeholder="1600 Middleearth Pkwy"></td>
+<td><input type="text" name="streetaddr" placeholder="1600 Middleearth Pkwy" maxlength="50"></td>
 <td><label> City </label></td>
-<td><input type="text" name="city" placeholder="Gondor"></td>
+<td><input type="text" name="city" placeholder="Gondor" maxlength="40"></td>
 </tr>
 <tr>
     <td><label> State </label></td>
-    <td><input type="text" name="state" placeholder="CA"></td>
+    <td><input type="text" name="state" placeholder="CA" maxlength="20"></td>
     <td><label>Postal Code</label></td>
-    <td><input type="text" name="postalcode" placeholder="94043" pattern= ([0-9]{5})|([a-Z][0-9][a-Z](\s|-)?[0-9][a-Z][0-9])$></td>
+    <td><input type="text" name="postalcode" placeholder="94043" pattern= ([0-9]{5})|([a-Z][0-9][a-Z](\s|-)?[0-9][a-Z][0-9])$ maxlength="20"></td>
 </tr>
 <tr>
     <td><label> Country </label></td>
-    <td><input type="text" name="country" placeholder="United States"></td>
+    <td><input type="text" name="country" placeholder="United States" maxlength="20"></td>
 </tr>
 </table>
 

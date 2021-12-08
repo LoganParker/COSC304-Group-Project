@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.io.*,java.sql.*"%>
-<%@ include file="jdbc.jsp" %>
-
+<%@include file="jdbc.jsp"%>
+<%@include file="auth.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,12 +9,13 @@
 <body>
 <%@include file="header.jsp"%>
 
-
-<h1> Dungeon Inventroy </h1> 
+<div style="margin:0 auto;text-align:center;display:inline">
+<h2 class="font-effect-fire-animation"> Dungeon Inventroy </h2> 
+<div class="centerDiv"style="background-color: white">
 
 <form name='a sick form' method ='get' action='warehouse.jsp'> 
- <select name="warehouse" id="warehouse" onchange="this.form.submit()">
- <option value=""> </option> 
+ <select name="warehouse" id="warehouse" onchange="this.form.submit()" maxlength = "30" >
+ <option value="">Select a Warehouse</option> 
 
  <%
                          
@@ -39,8 +40,8 @@
 
                 pstmt = con.prepareStatement(sql);
                 pstmt.setString(1,warehouse);
-
-                rst = pstmt.executeQuery();
+                if(warehouse != null)
+                    rst = pstmt.executeQuery();
             
             out.println("<form name=\"UpdateWarehouse\" method=\"get\" action=\"updateWarehouse.jsp\">");
             out.print("<input type=\"hidden\" name=\"warehouseId\"value=\""+warehouse+"\">");    
@@ -73,6 +74,7 @@
 
 
 
-
+</div>
+</div>
 </body>
 </html>

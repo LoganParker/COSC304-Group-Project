@@ -67,10 +67,15 @@
 
 
 			int result = pstmt.executeUpdate();
+			
 			out.println(result);
 			if(result == 1 ){
+				rst = pstmt.getGeneratedKeys();
+            	rst.next();
+            	int custId = rst.getInt(1);
 				session.removeAttribute("loginMessage");
 				session.setAttribute("authenticatedUser",username);
+				session.setAttribute("customerId",custId);
 				retStr = username;
 				return username; //insert works!
 			} else {
