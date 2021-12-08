@@ -4,7 +4,7 @@
 <%
 
 // Retrieve values from form and session
-String custId = (String) session.getAttribute("customerId");
+String custId =(String) session.getAttribute("customerId");
 String productId = request.getParameter("productId");
 String reviewComment = request.getParameter("reviewComment");
 String rating = request.getParameter("rating");

@@ -83,7 +83,6 @@ while(rst.next()) {
     String reviewComment = rst.getString(4);
     String review = "🌀";
     String repeated = String.join("", Collections.nCopies(reviewRating,review));
-    //String repeated = review.repeat(reviewRating);
     out.print("<div><hr>");
     out.print("<span class = heading>Name: " + firstName + "</span>");
     out.print("<p>Date: "+ reviewDate +"</p>");

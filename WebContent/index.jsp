@@ -14,7 +14,7 @@
         String sql = "";
 		PreparedStatement pstmt = null;
 		boolean hasOrdered = false;
-		String custId = (String) session.getAttribute("customerId");
+		String custId =(String) session.getAttribute("customerId");
         out.println("<hr>");
 		try{
             getConnection();
